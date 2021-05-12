@@ -13,8 +13,8 @@ class TimestampModel(models.Model):
         ordering = ['created_at']
 
 
-class PollManager(models.Manager):
-    """Manager опроса"""
+class PollQuerySet(models.QuerySet):
+    """Базовый QuerySet опроса"""
 
     def available(self):
         """Получить активные опросы"""
@@ -29,7 +29,7 @@ class Poll(TimestampModel):
     start_date = models.DateField('Дата старта', db_index=True)
     end_date = models.DateField('Дата окончания', db_index=True)
 
-    objects = PollManager()
+    objects = PollQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'Опрос'
