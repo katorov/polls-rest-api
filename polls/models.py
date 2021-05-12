@@ -20,7 +20,7 @@ class PollManager(models.Manager):
     def available(self):
         """Получить активные опросы"""
         today = datetime.date.today()
-        return self.filter(start_date__gte=today, end_date__lte=today)
+        return self.filter(start_date__lte=today, end_date__gte=today)
 
 
 class Poll(TimestampModel):
