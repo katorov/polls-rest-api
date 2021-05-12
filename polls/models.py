@@ -1,7 +1,6 @@
 import datetime
 
 from django.db import models
-from django.contrib.auth import get_user_model
 
 
 class TimestampModel(models.Model):
@@ -64,16 +63,28 @@ class Question(TimestampModel):
         return f'[{self.question_type}] {self.question_text}'
 
 
+class Customer(TimestampModel):
+    """Пользователь, прошедший опрос"""
+    customer_id = models.PositiveBigIntegerField('id', primary_key=True)
+
+    class Meta:
+        verbose_name = 'Пользователь, прошедший опрос'
+        verbose_name_plural = 'Пользователи, прошедшие опросы'
+
+    def __str__(self):
+        return f'{self.customer_id}'
+
+
 class CompletedPoll(TimestampModel):
     """Пройденный опрос"""
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос')
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
-                             verbose_name='Пользователь')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE,
+                                 verbose_name='Пользователь')
 
     class Meta:
         verbose_name = 'Пройденный опрос'
         verbose_name_plural = 'Пройденные опросы'
-        ordering = ['user', 'created_at']
+        ordering = ['customer', 'created_at']
 
     def __str__(self):
         return f'{self.poll.name}'
@@ -93,7 +104,7 @@ class QuestionChoice(TimestampModel):
         return f'{self.choice_text}'
 
 
-class UserAnswer(TimestampModel):
+class CustomerAnswer(TimestampModel):
     """Ответ пользователя на вопрос"""
     answer_choice = models.ForeignKey(
         QuestionChoice, on_delete=models.CASCADE,
