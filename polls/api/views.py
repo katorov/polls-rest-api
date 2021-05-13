@@ -8,7 +8,7 @@ from polls.api.permissions import ReadOnly
 
 
 class PollViewSet(MultiSerializerViewSetMixin, ModelViewSet):
-    """Представление для работы с опросами"""
+    """REST api для опросов"""
     queryset = models.Poll.objects.all()
     serializer_class = serializers.PollSerializer
     serializer_action_classes = {
@@ -25,10 +25,17 @@ class PollViewSet(MultiSerializerViewSetMixin, ModelViewSet):
 
 
 class QuestionViewSet(MultiSerializerViewSetMixin, ModelViewSet):
-    """Представление для работы с вопросами в опросах"""
+    """REST api для вопросов и вариантов ответов"""
     queryset = models.Question.objects.all()
+    http_method_names = ('get', 'post')
     serializer_class = serializers.QuestionSerializer
     serializer_action_classes = {
         'create': serializers.QuestionCreateSerializer
     }
     permission_classes = [IsAdminUser]
+
+
+class CompletedPollViewSet(MultiSerializerViewSetMixin, ModelViewSet):
+    """REST api для пройденных опросов"""
+    queryset = models.CompletedPoll.objects.all()
+    serializer_class = serializers.CompletedPollSerializer
