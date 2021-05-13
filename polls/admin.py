@@ -15,6 +15,10 @@ class CustomerAnswerInline(admin.TabularInline):
     model = models.CustomerAnswer
 
 
+class CompletedPollInline(admin.TabularInline):
+    model = models.CompletedPoll
+
+
 @admin.register(models.Poll)
 class PollAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'start_date', 'end_date', 'created_at')
@@ -34,13 +38,13 @@ class CompletedPollAdmin(admin.ModelAdmin):
     inlines = [CustomerAnswerInline]
 
 
-@admin.register(models.QuestionChoice)
-class QuestionChoiceAdmin(admin.ModelAdmin):
-    list_display = ('question', 'choice_text', 'created_at')
-    list_filter = ('question',)
-
-
 @admin.register(models.CustomerAnswer)
 class CustomerAnswerAdmin(admin.ModelAdmin):
     list_display = ('poll', 'question', 'answer_choice', 'answer_text', 'created_at')
     list_filter = ('poll', 'question')
+
+
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('customer_id',)
+    inlines = [CompletedPollInline]
