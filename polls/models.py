@@ -52,7 +52,8 @@ class Question(TimestampModel):
     question_text = models.TextField('Текст вопроса')
     question_type = models.CharField('Тип вопроса', max_length=2, choices=QUESTION_TYPES,
                                      db_index=True)
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос')
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос',
+                             related_name='questions')
 
     class Meta:
         verbose_name = 'Вопрос'
@@ -77,7 +78,8 @@ class Customer(TimestampModel):
 
 class CompletedPoll(TimestampModel):
     """Пройденный опрос"""
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос')
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='Опрос',
+                             related_name='completed_polls')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE,
                                  verbose_name='Пользователь')
 
@@ -93,7 +95,8 @@ class CompletedPoll(TimestampModel):
 class QuestionChoice(TimestampModel):
     """Вариант ответа на вопрос"""
     choice_text = models.CharField('Вариант ответа', max_length=255)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос',
+                                 related_name='choices')
 
     class Meta:
         verbose_name = 'Вариант ответа'
@@ -105,7 +108,7 @@ class QuestionChoice(TimestampModel):
 
 
 class CustomerAnswer(TimestampModel):
-    """Ответ пользователя на вопрос"""
+    """Ответ пользователя на вопрос в пройденном опросе"""
     answer_choice = models.ForeignKey(
         QuestionChoice, on_delete=models.CASCADE,
         verbose_name='Выбранный вариант ответа',
@@ -113,11 +116,12 @@ class CustomerAnswer(TimestampModel):
     )
     answer_text = models.CharField('Ответ', max_length=255, blank=True)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
-    poll = models.ForeignKey(CompletedPoll, on_delete=models.CASCADE, verbose_name='Опрос')
+    poll = models.ForeignKey(CompletedPoll, on_delete=models.CASCADE, verbose_name='Опрос',
+                             related_name='answers')
 
     class Meta:
-        verbose_name = 'Ответ на вопрос'
-        verbose_name_plural = 'Ответы на вопрос'
+        verbose_name = 'Ответ пользователя'
+        verbose_name_plural = 'Ответы пользователей'
         ordering = ['poll', 'question', 'created_at']
 
     def __str__(self):
