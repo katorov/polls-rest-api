@@ -39,3 +39,4 @@ class CompletedPollViewSet(MultiSerializerViewSetMixin, ModelViewSet):
     """REST api для пройденных опросов"""
     queryset = models.CompletedPoll.objects.all()
     serializer_class = serializers.CompletedPollSerializer
+    filterset_fields = ['customer_id']
