@@ -6,5 +6,6 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 
-    path('api/', include('polls.urls'))
+    path('api/', include('polls.urls')),
+    path('api/docs/', include('config.api_docs')),
 ]
