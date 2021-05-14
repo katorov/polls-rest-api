@@ -1,4 +1,5 @@
 class MultiSerializerViewSetMixin(object):
+    """Mixin для выбора нужного serializer"""
     def get_serializer_class(self):
         """Получить serializer для действия, заданного в serializer_action_classes"""
         try:
