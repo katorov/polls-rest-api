@@ -19,6 +19,7 @@ pip-delete-this-directory.txt
 
 # Django stuff:
 media/
+static/
 *.log
 db.sqlite3
 
