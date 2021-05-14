@@ -3,6 +3,7 @@ version: "3"
 
 services:
   web:
+    container_name: polls_app_web
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,6 +14,7 @@ services:
       - "8000:8000"
 
   nginx:
+    container_name: polls_app_nginx
     build:
       context: ./nginx
       dockerfile: Dockerfile
